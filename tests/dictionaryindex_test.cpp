@@ -1,0 +1,95 @@
+#include <gtest/gtest.h>
+#include <unistd.h>
+#include <filesystem>
+#include <loglibrary.h>
+#include <dictionaryindex.h>
+
+#include <sys/stat.h>
+
+#include <format>
+#include <fstream>
+
+std::string getFilePath(std::string fileName){
+    char cwd[256];
+    getcwd(cwd, 256);
+
+    std::string ret = std::format("{}/{}", cwd, fileName);
+    return ret;
+}
+
+void cleanUpIndexFile(std::string fileName){
+    std::string filePath = getFilePath(fileName);
+    std::string indexPath = filePath + ".idx";
+    std::filesystem::remove(indexPath);
+}
+
+TEST(DictionaryIndexSuite, LoadIndex1){
+
+    std::string filePath = getFilePath("simple_input_1");
+    cleanUpIndexFile(filePath);
+
+    // look up the index of two random words in
+    // the newly created index
+    DictionaryIndex di {filePath};
+    auto indexOfCity = di.getIndex("ci");
+    auto indexOfRibbon = di.getIndex("ri");
+
+    std::fstream fs {filePath, std::ios_base::in};
+    fs.seekg(indexOfCity);
+
+    std::string line;
+    std::getline(fs, line);
+    EXPECT_EQ(line, "city") << "incorrect index for the word 'city'";
+
+    fs.seekg(indexOfRibbon);
+    std::getline(fs, line);
+    EXPECT_EQ(line, "ribbon") << "incorrect index for the word 'ribbon'";
+}
+
+TEST(DictionaryIndexSuite, LoadUnicodeIndex1){
+    std::string filePath = getFilePath("unicode_input");
+    cleanUpIndexFile(filePath);
+
+    // look up the index of two random words in
+    // the newly created index
+    DictionaryIndex di {filePath};
+    auto indexOfZahne = di.getIndex("Zä");
+    auto indexOfSpitz = di.getIndex("Sp");
+
+    std::fstream fs {filePath, std::ios_base::in};
+    fs.seekg(indexOfZahne);
+
+    std::string line;
+    std::getline(fs, line);
+    EXPECT_EQ(line, "Zähnen") << "incorrect index for the word 'Zähnen'";
+
+    fs.seekg(indexOfSpitz);
+    std::getline(fs, line);
+    EXPECT_EQ(line, "Spitze") << "incorrect index for the word 'Spitze'";
+}
+
+TEST(DictionaryIndexSuite, LoadIndex_Non_existing_Lookup){
+    std::string filePath = getFilePath("simple_input_1");
+    cleanUpIndexFile(filePath);
+
+    DictionaryIndex di {filePath};
+    auto nonExistentIndex = di.getIndex("kk");
+    EXPECT_EQ(nonExistentIndex, -1) << "It found a non-existent index...";
+}
+
+TEST(DictionaryIndexSuite, QuitOnNonExistentInput){
+    std::string filePath = "/tmp/hopefully_this_does_not_exist";
+    EXPECT_DEATH({DictionaryIndex di{filePath};}, "");
+}
+
+TEST(DictionaryIndexSuite, ParseEmptyInput){
+    std::string filePath = getFilePath("empty_input");
+    cleanUpIndexFile(filePath);
+
+    DictionaryIndex di {filePath};
+
+    std::string indexPath = filePath + ".idx";
+    struct stat indexFileInfo;
+    stat(indexPath.c_str(), &indexFileInfo);
+    EXPECT_EQ(indexFileInfo.st_size, 0) << "Index file generated from empty input should be also empty!";
+}
