@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Quick)
 find_package(LogLibrary)
+find_package(ICU 7.3 COMPONENTS uc REQUIRED)
 
 set(SOURCES src/dictionaryindex.cpp
             src/dictionary.cpp
@@ -33,7 +34,7 @@ qt_add_qml_module(appdictionary
     QML_FILES qml/Main.qml)
 
 target_link_libraries(appdictionary
-    PRIVATE Qt6::Quick LogLibrary
+    PRIVATE Qt6::Quick LogLibrary ICU::uc
 )
 
 target_include_directories(appdictionary PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -61,7 +62,7 @@ if (enable_test)
     add_executable(dictionary_test ${HEADERS} ${SOURCES} ${TEST_SOURCES})
 
     target_link_directories(dictionary_test PRIVATE $ENV{CMAKE_SYSROOT}/usr/lib)
-    target_link_libraries(dictionary_test GTest::gtest_main LogLibrary Qt6::Quick)
+    target_link_libraries(dictionary_test GTest::gtest_main LogLibrary Qt6::Quick ICU::uc)
 
     target_include_directories(dictionary_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
@@ -82,3 +83,4 @@ if (enable_test)
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+

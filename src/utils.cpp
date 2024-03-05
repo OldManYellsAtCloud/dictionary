@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include <unicode/unistr.h>
+
 /**
  * @brief getUnicodeSubstring
  * Strings with Unicode encoding require special handling, when it
@@ -17,35 +19,12 @@
  */
 std::string getUnicodeSubstring(std::string s, size_t n, size_t start){
     std::string ret;
-    const char* sChr = s.c_str();
-    size_t byteCounter = 0;
-    size_t charCounter = 0;
-    while (charCounter < n && *sChr){
-        if (*sChr >= ASCII_PRINTABLE_START && *sChr <= ASCII_PRINTABLE_END)
-            ++charCounter;
-        ++byteCounter;
-        *sChr++;
-    }
+    icu_73::UnicodeString unicodeString, target;
 
-    return s.substr(start, --byteCounter);
-/*
-    while ( charCounter < n && *sChr){
-        if ((*sChr++ & 0xc0) != 0x80){
-            ++charCounter;
-        }
-        ++byteCounter;
-    }
-    ret = s.substr(start, byteCounter);
+    unicodeString = icu_73::UnicodeString::fromUTF8(icu_73::StringPiece(s.c_str()));
 
-    // If the last character is not printable, that means
-    // that a Unicode character was cut in half somewhere.
-    // This is hopefully not overly naive for the German charset.
-    // Nevertheless, this can only work as long there is only 1
-    // accented character in the substring... definitely needs a
-    // bit more eyeballing.
-    if (ret[ret.length() - 1] < ASCII_PRINTABLE_START || ret[ret.length() - 1] > ASCII_PRINTABLE_END)
-        ret = s.substr(start, byteCounter + 1);
-*/
+    unicodeString.extract(start, n, target);
+    target.toUTF8String(ret);
     return ret;
 }
 
