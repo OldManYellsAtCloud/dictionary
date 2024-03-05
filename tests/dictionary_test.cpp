@@ -34,5 +34,6 @@ TEST(DictionarySuite, ParseFirstEntry){
     std::string filePath = getFilePath("de_dict_sample");
     Dictionary d{filePath};
     auto res = d.getEntries("Gö");
-    EXPECT_TRUE(false) << res.original;
+    EXPECT_EQ(res.original, "Gödelnumerierung {f} [alt]");
+    EXPECT_EQ(res.translation, "Gödel numbering [also: Goedel numbering]");
 }

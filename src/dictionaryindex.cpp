@@ -134,7 +134,7 @@ long DictionaryIndex::getIndex(const std::string &s)
     std::string tmp {s};
     long res;
     if (s.length() > 2)
-        tmp = s.substr(0, 2);
+        tmp = getUnicodeSubstring(s, 2, 0);
 
     if (index.contains(tmp))
         return index[tmp];

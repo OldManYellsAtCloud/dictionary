@@ -39,16 +39,16 @@ TEST(DictionaryIndexSuite, LoadUnicodeIndex1){
     auto indexOfZahne = di.getIndex("Zä");
     auto indexOfSpitz = di.getIndex("Sp");
 
-    std::fstream fs {filePath, std::ios_base::in};
-    fs.seekg(indexOfZahne);
-
     std::string line;
-    std::getline(fs, line);
-    EXPECT_EQ(line, "Zähnen") << "incorrect index for the word 'Zähnen'";
+    std::fstream fs {filePath, std::ios_base::in};
 
     fs.seekg(indexOfSpitz);
     std::getline(fs, line);
     EXPECT_EQ(line, "Spitze") << "incorrect index for the word 'Spitze'";
+
+    fs.seekg(indexOfZahne);
+    std::getline(fs, line);
+    EXPECT_EQ(line, "Zähnen") << "incorrect index for the word 'Zähnen'";
 }
 
 TEST(DictionaryIndexSuite, LoadIndex_Non_existing_Lookup){
