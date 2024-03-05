@@ -1,27 +1,10 @@
 #include <gtest/gtest.h>
 #include <unistd.h>
-#include <filesystem>
 #include <loglibrary.h>
 #include <dictionaryindex.h>
-
-#include <sys/stat.h>
-
-#include <format>
 #include <fstream>
 
-std::string getFilePath(std::string fileName){
-    char cwd[256];
-    getcwd(cwd, 256);
-
-    std::string ret = std::format("{}/{}", cwd, fileName);
-    return ret;
-}
-
-void cleanUpIndexFile(std::string fileName){
-    std::string filePath = getFilePath(fileName);
-    std::string indexPath = filePath + ".idx";
-    std::filesystem::remove(indexPath);
-}
+#include "testutils.h"
 
 TEST(DictionaryIndexSuite, LoadIndex1){
 
