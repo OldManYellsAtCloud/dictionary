@@ -2,6 +2,7 @@
 #include <loglibrary.h>
 #include "utils.h"
 
+
 /**
  * @brief Dictionary::Dictionary
  * Constructor.
@@ -62,14 +63,14 @@ Dictionary &Dictionary::operator=(const Dictionary &other)
  */
 std::string Dictionary::getFirstMatchingLine(std::string word)
 {
-    auto fileOffset = idx.getIndex(word);
+    auto roughOffset = idx.getIndex(word);
     std::string line;
-    if (fileOffset < 0){
+    if (roughOffset < 0){
         ERROR("Could not get dictionary offset for '{}'", word);
         return line;
     }
 
-    dictStream.seekg(fileOffset);
+    dictStream.seekg(roughOffset);
     std::getline(dictStream, line);
     return line;
 }
@@ -84,3 +85,53 @@ Entry Dictionary::getFirstEntry(std::string word)
     return ret;
 }
 
+std::vector<Entry> Dictionary::getEntries(std::string word)
+{
+    std::vector<Entry> ret;
+    int num = 5;
+    long startIndex = getBestMatchingIndex(word);
+
+    dictStream.seekg(startIndex);
+
+    std::string tmp;
+
+    while (num > 0 && !dictStream.eof()){
+        std::getline(dictStream, tmp);
+        if (!tmp.size())
+            continue;
+        ret.push_back(parseEntry(tmp));
+        --num;
+    }
+    dictStream.clear();
+    return ret;
+}
+
+long Dictionary::getBestMatchingIndex(std::string word)
+{
+    word = toLowerCase(word);
+    long roughIndex = idx.getIndex(word);
+
+    if (roughIndex < 0){
+        ERROR("Could not get dictionary offset for {}", word);
+    }
+
+    long lastIndex = roughIndex;
+    dictStream.seekg(roughIndex);
+
+    std::string line = "";
+
+    do {
+        std::getline(dictStream, line);
+        line = toLowerCase(line);
+        if (line.starts_with(word)){
+            break;
+        }
+        if (word < line){
+            break;
+        }
+        lastIndex = dictStream.tellg();
+    } while (!dictStream.eof());
+
+    dictStream.clear();
+    return lastIndex;
+}

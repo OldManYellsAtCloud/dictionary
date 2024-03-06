@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <loglibrary.h>
 #include <unicode/unistr.h>
+#include <algorithm>
 
 /**
  * @brief getUnicodeSubstring
@@ -79,4 +80,19 @@ EntryType parseEntryType(std::string s){
     }
 
     return entryTypeLookupTable[s];
+}
+
+/**
+ * @brief toLowerCase
+ * Convert string to lowercase.
+ * @return
+ * The lower case version of the argument.
+ */
+std::string toLowerCase(std::string s)
+{
+    std::string ret;
+    icu_73::UnicodeString us = icu_73::UnicodeString::fromUTF8(icu_73::StringPiece(s.c_str()));
+    us = us.toLower();
+    us.toUTF8String(ret);
+    return ret;
 }

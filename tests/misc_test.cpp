@@ -140,3 +140,17 @@ TEST(MiscSuite, ParseEntryType_VERB){
     et = parseEntryType(s);
     EXPECT_EQ(et, EntryType::NAN);
 }
+
+TEST(MiscSuite, ToLower){
+    std::string s = "AAAA";
+    s = toLowerCase(s);
+    EXPECT_EQ(s, "aaaa");
+
+    s = "!!!!aaa";
+    s = toLowerCase(s);
+    EXPECT_EQ(s, "!!!!aaa");
+
+    s = "ÁÁ";
+    s = toLowerCase(s);
+    EXPECT_EQ(s, "áá");
+}

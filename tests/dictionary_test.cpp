@@ -50,3 +50,18 @@ TEST(DictionarySuite, ParseEntry_MissingElements){
     EXPECT_EQ(res.niche, "");
 }
 
+TEST(DictionarySuite, GetEntries){
+    std::string filePath = getFilePath("de_dict_sample_sorted");
+    Dictionary d{filePath};
+    auto res = d.getEntries("jd");
+    EXPECT_EQ(res.size(), 5);
+    EXPECT_EQ(res.at(0).original, "jd. entjungferte");
+    EXPECT_EQ(res.at(4).original, "Karikaturen {pl}");
+}
+
+TEST(DictionarySuite, GetEntries_NotEnoughEntries){
+    std::string filePath = getFilePath("de_dict_sample_sorted");
+    Dictionary d{filePath};
+    auto res = d.getEntries("vo");
+    EXPECT_EQ(res.size(), 2);
+}

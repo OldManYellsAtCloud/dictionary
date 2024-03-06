@@ -14,6 +14,7 @@ private:
     DictionaryIndex idx;
     std::fstream dictStream;
     std::string dictPath_;
+    long getBestMatchingIndex(std::string word);
 public:
     explicit Dictionary(std::string dictPath);
     ~Dictionary();

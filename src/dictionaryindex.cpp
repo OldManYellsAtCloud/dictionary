@@ -60,6 +60,7 @@ bool DictionaryIndex::createIndex(const std::string &filePath)
     while (!inputFile.eof()) {
         std::getline(inputFile, fullLine);
         firstCharsOfLine = getUnicodeSubstring(fullLine, 3, 0);
+        firstCharsOfLine = toLowerCase(firstCharsOfLine);
 
         if (firstCharsOfLine.starts_with(lastIndex)) // we have seen this, skip
             continue;
@@ -131,10 +132,10 @@ DictionaryIndex::DictionaryIndex(const std::string& path): indexPath{path + ".id
  */
 long DictionaryIndex::getIndex(const std::string &s)
 {
-    std::string tmp {s};
+    std::string tmp {toLowerCase(s)};
     long res;
-    if (s.length() > 2)
-        tmp = getUnicodeSubstring(s, 2, 0);
+    if (tmp.length() > 2)
+        tmp = getUnicodeSubstring(tmp, 2, 0);
 
     if (index.contains(tmp))
         return index[tmp];

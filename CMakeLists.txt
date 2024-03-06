@@ -73,6 +73,7 @@ if (enable_test)
     FILE(COPY tests/files/unicode_input DESTINATION ${CMAKE_BINARY_DIR})
     FILE(COPY tests/files/simple_input_2 DESTINATION ${CMAKE_BINARY_DIR})
     FILE(COPY tests/files/de_dict_sample DESTINATION ${CMAKE_BINARY_DIR})
+    FILE(COPY tests/files/de_dict_sample_sorted DESTINATION ${CMAKE_BINARY_DIR})
 
     include(GoogleTest)
     # gtest_discover_tests(mailclient_test)
