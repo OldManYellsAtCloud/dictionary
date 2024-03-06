@@ -1,5 +1,5 @@
 #include "utils.h"
-
+#include <loglibrary.h>
 #include <unicode/unistr.h>
 
 /**
@@ -62,4 +62,21 @@ std::string getNextToken(const std::string& s, const std::string& delim, size_t&
     }
 
     return ret;
+}
+
+/**
+ * @brief parseEntryType
+ * Match the given string to the corresponding entrytype.
+ * @param s
+ * The string to match.
+ * @return
+ * The matched entrytype.
+ */
+EntryType parseEntryType(std::string s){
+    if (entryTypeLookupTable.count(s) == 0){
+        ERROR("{} is an unknown entry type!", s);
+        return EntryType::NAN;
+    }
+
+    return entryTypeLookupTable[s];
 }

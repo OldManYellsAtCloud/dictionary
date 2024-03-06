@@ -91,3 +91,52 @@ TEST(MiscSuite, GetNextToken_OnlyDelimiter){
     EXPECT_EQ(res, "");
     EXPECT_EQ(curPos, text.length());
 }
+
+TEST(MiscSuite, ParseEntryType_NAN){
+    std::string s = "";
+    EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NAN);
+
+    s = "NON_EXISTENT";
+    EXPECT_EQ(et, EntryType::NAN);
+}
+
+TEST(MiscSuite, ParseEntryType_ADJ){
+    std::string s = "adj";
+    EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::ADJECTIVE);
+
+    s = "adj_xxx";
+    et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NAN);
+}
+
+TEST(MiscSuite, ParseEntryType_ADV){
+    std::string s = "adv";
+    EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::ADVERB);
+
+    s = "adv_xxx";
+    et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NAN);
+}
+
+TEST(MiscSuite, ParseEntryType_NOUN){
+    std::string s = "noun";
+    EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NOUN);
+
+    s = "noun_xxx";
+    et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NAN);
+}
+
+TEST(MiscSuite, ParseEntryType_VERB){
+    std::string s = "verb";
+    EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::VERB);
+
+    s = "verb_xxx";
+    et = parseEntryType(s);
+    EXPECT_EQ(et, EntryType::NAN);
+}

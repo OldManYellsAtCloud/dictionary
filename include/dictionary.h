@@ -3,8 +3,10 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 #include "dictionaryindex.h"
 #include "entry.h"
+
 
 class Dictionary
 {
@@ -19,7 +21,8 @@ public:
 
     Dictionary& operator=(const Dictionary& other);
     std::string getFirstMatchingLine(std::string word);
-    Entry getEntries(std::string word);
+    Entry getFirstEntry(std::string word);
+    std::vector<Entry> getEntries(std::string word);
 };
 
 #endif // DICTIONARY_H

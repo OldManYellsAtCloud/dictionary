@@ -74,15 +74,13 @@ std::string Dictionary::getFirstMatchingLine(std::string word)
     return line;
 }
 
-Entry Dictionary::getEntries(std::string word)
+Entry Dictionary::getFirstEntry(std::string word)
 {
     Entry ret;
     std::string lineToParse = getFirstMatchingLine(word);
     size_t curPos = 0;
 
-    ret.original = getNextToken(lineToParse, "\t", curPos);
-    ret.translation = getNextToken(lineToParse, "\t", curPos);
-
+    ret = parseEntry(lineToParse);
     return ret;
 }
 

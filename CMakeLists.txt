@@ -14,6 +14,7 @@ find_package(ICU 7.3 COMPONENTS uc REQUIRED)
 set(SOURCES src/dictionaryindex.cpp
             src/dictionary.cpp
             src/utils.cpp
+            src/entry.cpp
         )
 
 set(HEADERS include/dictionaryindex.h

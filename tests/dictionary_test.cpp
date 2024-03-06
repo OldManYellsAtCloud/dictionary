@@ -30,10 +30,23 @@ TEST(DictionarySuite, LookupNonexistentWord){
     EXPECT_EQ(res, expected);
 }
 
-TEST(DictionarySuite, ParseFirstEntry){
+TEST(DictionarySuite, ParseEntry){
     std::string filePath = getFilePath("de_dict_sample");
     Dictionary d{filePath};
-    auto res = d.getEntries("Gö");
+    auto res = d.getFirstEntry("Gö");
     EXPECT_EQ(res.original, "Gödelnumerierung {f} [alt]");
     EXPECT_EQ(res.translation, "Gödel numbering [also: Goedel numbering]");
+    EXPECT_EQ(res.entryType, EntryType::NOUN);
+    EXPECT_EQ(res.niche, "[math.] ");
 }
+
+TEST(DictionarySuite, ParseEntry_MissingElements){
+    std::string filePath = getFilePath("de_dict_sample");
+    Dictionary d{filePath};
+    auto res = d.getFirstEntry("jd");
+    EXPECT_EQ(res.original, "jd. verdunkelt");
+    EXPECT_EQ(res.translation, "sb. dims");
+    EXPECT_EQ(res.entryType, EntryType::NAN);
+    EXPECT_EQ(res.niche, "");
+}
+
