@@ -73,13 +73,13 @@ std::string getNextToken(const std::string& s, const std::string& delim, size_t&
  * @return
  * The matched entrytype.
  */
-EntryType parseEntryType(std::string s){
-    if (entryTypeLookupTable.count(s) == 0){
+DictionaryEntry::EntryType parseEntryType(std::string s){
+    if (DictionaryEntry::entryTypeLookupTable.count(s) == 0){
         ERROR("{} is an unknown entry type!", s);
-        return EntryType::NAN;
+        return DictionaryEntry::EntryType::NAN;
     }
 
-    return entryTypeLookupTable[s];
+    return DictionaryEntry::entryTypeLookupTable[s];
 }
 
 /**

@@ -94,51 +94,51 @@ TEST(MiscSuite, GetNextToken_OnlyDelimiter){
 
 TEST(MiscSuite, ParseEntryType_NAN){
     std::string s = "";
-    EntryType et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NAN);
+    DictionaryEntry::EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 
     s = "NON_EXISTENT";
-    EXPECT_EQ(et, EntryType::NAN);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 }
 
 TEST(MiscSuite, ParseEntryType_ADJ){
     std::string s = "adj";
-    EntryType et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::ADJECTIVE);
+    DictionaryEntry::EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::ADJECTIVE);
 
     s = "adj_xxx";
     et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NAN);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 }
 
 TEST(MiscSuite, ParseEntryType_ADV){
     std::string s = "adv";
-    EntryType et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::ADVERB);
+    DictionaryEntry::EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::ADVERB);
 
     s = "adv_xxx";
     et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NAN);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 }
 
 TEST(MiscSuite, ParseEntryType_NOUN){
     std::string s = "noun";
-    EntryType et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NOUN);
+    DictionaryEntry::EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NOUN);
 
     s = "noun_xxx";
     et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NAN);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 }
 
 TEST(MiscSuite, ParseEntryType_VERB){
     std::string s = "verb";
-    EntryType et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::VERB);
+    DictionaryEntry::EntryType et = parseEntryType(s);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::VERB);
 
     s = "verb_xxx";
     et = parseEntryType(s);
-    EXPECT_EQ(et, EntryType::NAN);
+    EXPECT_EQ(et, DictionaryEntry::EntryType::NAN);
 }
 
 TEST(MiscSuite, ToLower){

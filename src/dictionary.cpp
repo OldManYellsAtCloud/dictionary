@@ -75,19 +75,19 @@ std::string Dictionary::getFirstMatchingLine(std::string word)
     return line;
 }
 
-Entry Dictionary::getFirstEntry(std::string word)
+DictionaryEntry::Entry Dictionary::getFirstEntry(std::string word)
 {
-    Entry ret;
+    DictionaryEntry::Entry ret;
     std::string lineToParse = getFirstMatchingLine(word);
     size_t curPos = 0;
 
-    ret = parseEntry(lineToParse);
+    ret = DictionaryEntry::parseEntry(lineToParse);
     return ret;
 }
 
-std::vector<Entry> Dictionary::getEntries(std::string word)
+std::vector<DictionaryEntry::Entry> Dictionary::getEntries(std::string word)
 {
-    std::vector<Entry> ret;
+    std::vector<DictionaryEntry::Entry> ret;
     int num = 5;
     long startIndex = getBestMatchingIndex(word);
 
@@ -99,7 +99,7 @@ std::vector<Entry> Dictionary::getEntries(std::string word)
         std::getline(dictStream, tmp);
         if (!tmp.size())
             continue;
-        ret.push_back(parseEntry(tmp));
+        ret.push_back(DictionaryEntry::parseEntry(tmp));
         --num;
     }
     dictStream.clear();

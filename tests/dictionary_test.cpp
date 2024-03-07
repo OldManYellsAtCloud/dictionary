@@ -36,7 +36,7 @@ TEST(DictionarySuite, ParseEntry){
     auto res = d.getFirstEntry("Gö");
     EXPECT_EQ(res.original, "Gödelnumerierung {f} [alt]");
     EXPECT_EQ(res.translation, "Gödel numbering [also: Goedel numbering]");
-    EXPECT_EQ(res.entryType, EntryType::NOUN);
+    EXPECT_EQ(res.entryType, DictionaryEntry::EntryType::NOUN);
     EXPECT_EQ(res.niche, "[math.] ");
 }
 
@@ -46,7 +46,7 @@ TEST(DictionarySuite, ParseEntry_MissingElements){
     auto res = d.getFirstEntry("jd");
     EXPECT_EQ(res.original, "jd. verdunkelt");
     EXPECT_EQ(res.translation, "sb. dims");
-    EXPECT_EQ(res.entryType, EntryType::NAN);
+    EXPECT_EQ(res.entryType, DictionaryEntry::EntryType::NAN);
     EXPECT_EQ(res.niche, "");
 }
 

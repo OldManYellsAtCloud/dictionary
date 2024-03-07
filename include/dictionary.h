@@ -22,8 +22,8 @@ public:
 
     Dictionary& operator=(const Dictionary& other);
     std::string getFirstMatchingLine(std::string word);
-    Entry getFirstEntry(std::string word);
-    std::vector<Entry> getEntries(std::string word);
+    DictionaryEntry::Entry getFirstEntry(std::string word);
+    std::vector<DictionaryEntry::Entry> getEntries(std::string word);
 };
 
 #endif // DICTIONARY_H

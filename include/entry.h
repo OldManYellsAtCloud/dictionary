@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 
+namespace DictionaryEntry {
 
 enum class EntryType {
     NAN,
@@ -30,4 +31,5 @@ struct Entry {
 
 Entry parseEntry(std::string);
 
+}
 #endif // ENTRY_H

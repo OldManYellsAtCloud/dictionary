@@ -2,9 +2,10 @@
 #include "utils.h"
 #include <loglibrary.h>
 
+namespace DictionaryEntry {
 Entry parseEntry(std::string s)
 {
-    Entry ret;
+    DictionaryEntry::Entry ret;
     if (s.length() == 0){
         ERROR("Can't parse empty string into Entry object!");
         return ret;
@@ -34,4 +35,5 @@ Entry parseEntry(std::string s)
     ret.niche = getNextToken(s, delimiter, pos);
 
     return ret;
+}
 }
