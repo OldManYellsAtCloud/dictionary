@@ -7,20 +7,32 @@ Rectangle {
     property int wordType
     property string niche
 
-    height: 30
-    Text {
-        id: originalText
+    height: Math.max(originalRect.height, translationRect.height)
+    Rectangle {
+        id: originalRect
+        implicitHeight: Math.max(originalText.implicitHeight, translationText.implicitHeight)
         width: root.width / 2
-        height: 30
-        wrapMode: TextInput.Wrap
+        Text {
+            id: originalText
+            anchors.fill: parent
+            wrapMode: TextInput.Wrap
+        }
+        border.color: "lightblue"
+        border.width: 0.5
     }
 
-    Text {
-        id: translationText
-        text: translation
+    Rectangle {
+        id: translationRect
+        height: originalRect.implicitHeight
         width: root.width / 2
-        anchors.left: originalText.right
-        height: 30
-        wrapMode: TextInput.Wrap
+        anchors.left: originalRect.right
+
+        Text {
+            id: translationText
+            anchors.fill: parent
+            wrapMode: TextInput.Wrap
+        }
+        border.color: "lightblue"
+        border.width: 0.5
     }
 }
