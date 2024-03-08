@@ -1,9 +1,13 @@
+#include "entrymodel.h"
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    qmlRegisterType<EntryModel>("sgy.pine.dictionary", 1, 0, "EntryModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/dictionary/qml/Main.qml"_qs);

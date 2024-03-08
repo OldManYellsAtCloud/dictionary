@@ -1,12 +1,12 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include <stdint.h>
 #include <string>
 #include <fstream>
 #include <vector>
 #include "dictionaryindex.h"
 #include "entry.h"
-
 
 class Dictionary
 {
@@ -15,6 +15,7 @@ private:
     std::fstream dictStream;
     std::string dictPath_;
     long getBestMatchingIndex(std::string word);
+    uint16_t numberOfResultsToGet;
 public:
     explicit Dictionary(std::string dictPath);
     ~Dictionary();

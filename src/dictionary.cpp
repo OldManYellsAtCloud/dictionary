@@ -1,7 +1,8 @@
 #include "dictionary.h"
-#include <loglibrary.h>
 #include "utils.h"
 
+#include <loglibrary.h>
+#include <settingslib.h>
 
 /**
  * @brief Dictionary::Dictionary
@@ -12,6 +13,12 @@
 Dictionary::Dictionary(std::string dictPath): idx{dictPath}, dictPath_{dictPath}
 {
     dictStream = std::fstream(dictPath, std::ios_base::in);
+    try {
+        numberOfResultsToGet = std::stoi(SettingsLib{"/etc"}.getValue("general", "numberOfResults"));
+    } catch (std::exception e){
+        ERROR("Could not get number of results from config file! Error: {}", e.what());
+        exit(1);
+    }
 }
 
 /**
@@ -88,19 +95,17 @@ DictionaryEntry::Entry Dictionary::getFirstEntry(std::string word)
 std::vector<DictionaryEntry::Entry> Dictionary::getEntries(std::string word)
 {
     std::vector<DictionaryEntry::Entry> ret;
-    int num = 5;
     long startIndex = getBestMatchingIndex(word);
 
     dictStream.seekg(startIndex);
 
     std::string tmp;
 
-    while (num > 0 && !dictStream.eof()){
+    while (ret.size() < numberOfResultsToGet && !dictStream.eof()){
         std::getline(dictStream, tmp);
         if (!tmp.size())
             continue;
         ret.push_back(DictionaryEntry::parseEntry(tmp));
-        --num;
     }
     dictStream.clear();
     return ret;

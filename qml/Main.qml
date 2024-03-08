@@ -1,10 +1,16 @@
 import QtQuick
 import QtQuick.Controls
 
+import sgy.pine.dictionary
+
 Window {
     id:root
     visible: true
     title: qsTr("DE/EN - EN/DE Dictionary")
+
+    EntryModel {
+        id: entryModel
+    }
 
     RadioButton {
         id: deRadio
@@ -26,6 +32,11 @@ Window {
                 anchors.centerIn: parent
             }
         }
+
+        onCheckedChanged: {
+            if (checked)
+                entryModel.switchLanguage("de");
+        }
     }
 
     RadioButton {
@@ -46,6 +57,11 @@ Window {
                 text: qsTr("English")
                 anchors.centerIn: parent
             }
+        }
+
+        onCheckedChanged: {
+            if (checked)
+                entryModel.switchLanguage("en");
         }
     }
 
@@ -86,15 +102,30 @@ Window {
             font.pixelSize: 30
             height: 50
             cursorVisible: true
+            inputMethodHints: Qt.ImhNoAutoUppercase
+
+            onTextChanged: {
+                if (text)
+                    entryModel.getTranslations(text);
+            }
         }
     }
 
     ListView {
         id: entryList
-        anchors.top: textInput.bottom
+        anchors.top: textInputBackground.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        model: entryModel
+        visible: !(textInput.text === "")
+
+        delegate: EntryDelegate {
+            originalText: model.originalText
+            translationText: model.translationText
+            niche: model.niche
+            wordType: model.entryType
+        }
 
     }
 

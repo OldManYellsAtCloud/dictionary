@@ -1,16 +1,27 @@
 #include "entrymodel.h"
 #include <settingslib.h>
+#include <loglibrary.h>
+
+EntryModel::EntryModel(QObject *parent): EntryModel{"de", parent}
+{
+}
 
 EntryModel::EntryModel(QString language, QObject *parent)
     : QAbstractListModel{parent}
 {
-    std::string dictPath = SettingsLib{}.getValue("language", language.toStdString());
-    d = std::make_unique<Dictionary>(dictPath);
+    settings = std::make_unique<SettingsLib>(SETTINGS_PATH);
 
     friendlyRoleNames[originalTextRole] = "originalText";
     friendlyRoleNames[translationTextRole] = "translationText";
     friendlyRoleNames[entryTypeRole] = "entryType";
     friendlyRoleNames[nicheRole] = "niche";
+    switchLanguage(language);
+}
+
+EntryModel::~EntryModel()
+{
+    d.reset();
+    settings.reset();
 }
 
 int EntryModel::rowCount(const QModelIndex &parent) const
@@ -35,3 +46,34 @@ QVariant EntryModel::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
+
+void EntryModel::switchLanguage(QVariant language) {
+    clearModel();
+    std::string languageString = language.toString().toStdString();
+    std::string dictPath = settings->getValue("language", languageString);
+    d.reset();
+    d = std::make_unique<Dictionary>(dictPath);
+}
+
+void EntryModel::getTranslations(QVariant word)
+{
+    clearModel();
+    auto tmp = d->getEntries(word.toString().toStdString());
+
+    emit beginInsertRows(QModelIndex(), 0, tmp.size() - 1);
+    wordEntries = tmp;
+    emit endInsertRows();
+}
+
+void EntryModel::clearModel()
+{
+    emit beginRemoveRows(QModelIndex(), 0, wordEntries.size() - 1);
+    wordEntries.clear();
+    emit endRemoveRows();
+}
+
+QHash<int, QByteArray> EntryModel::roleNames() const
+{
+    return friendlyRoleNames;
+}
+
