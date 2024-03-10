@@ -20,9 +20,9 @@
  */
 std::string getUnicodeSubstring(std::string s, size_t n, size_t start){
     std::string ret;
-    icu_73::UnicodeString unicodeString, target;
+    icu::UnicodeString unicodeString, target;
 
-    unicodeString = icu_73::UnicodeString::fromUTF8(icu_73::StringPiece(s.c_str()));
+    unicodeString = icu::UnicodeString::fromUTF8(icu::StringPiece(s.c_str()));
 
     unicodeString.extract(start, n, target);
     target.toUTF8String(ret);
@@ -91,7 +91,7 @@ DictionaryEntry::EntryType parseEntryType(std::string s){
 std::string toLowerCase(std::string s)
 {
     std::string ret;
-    icu_73::UnicodeString us = icu_73::UnicodeString::fromUTF8(icu_73::StringPiece(s.c_str()));
+    icu::UnicodeString us = icu::UnicodeString::fromUTF8(icu::StringPiece(s.c_str()));
     us = us.toLower();
     us.toUTF8String(ret);
     return ret;
