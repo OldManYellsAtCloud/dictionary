@@ -124,18 +124,37 @@ long Dictionary::getBestMatchingIndex(std::string word)
     dictStream.seekg(roughIndex);
 
     std::string line = "";
-
+    auto exactWord = word.append("\t");
     do {
         std::getline(dictStream, line);
         line = toLowerCase(line);
-        if (line.starts_with(word)){
+        if (line.starts_with(exactWord)){
+            lastIndex = dictStream.tellg();
             break;
         }
         if (word < line){
             break;
         }
-        lastIndex = dictStream.tellg();
     } while (!dictStream.eof());
+
+    if (dictStream.eof()){
+        dictStream.clear();
+    }
+
+    if (lastIndex == roughIndex){
+        dictStream.seekg(roughIndex);
+        do {
+            std::getline(dictStream, line);
+            line = toLowerCase(line);
+            if (line.starts_with(word)){
+                break;
+            }
+            if (word < line){
+                break;
+            }
+            lastIndex = dictStream.tellg();
+        } while (!dictStream.eof());
+    }
 
     dictStream.clear();
     return lastIndex;

@@ -140,7 +140,7 @@ long DictionaryIndex::getIndex(const std::string &s)
     if (index.contains(tmp))
         return index[tmp];
 
-    DEBUG("{} can't be found in index file!", tmp);
+    DBG("{} can't be found in index file!", tmp);
 
     tmp = s.substr(0, 1);
     if (index.contains(tmp))
@@ -148,3 +148,4 @@ long DictionaryIndex::getIndex(const std::string &s)
 
     return -1;
 }
+
