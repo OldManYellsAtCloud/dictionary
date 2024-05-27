@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import QtWayland.Compositor
+
 import sgy.pine.dictionary
 
 Window {
@@ -20,6 +22,7 @@ Window {
         anchors.right: enRadio.left
         height: 50
         width: parent.width / 2
+        focusPolicy: Qt.NoFocus
 
         indicator: Rectangle {
             anchors.fill: parent
@@ -46,6 +49,7 @@ Window {
         anchors.right: parent.right
         height: 50
         width: parent.width / 2
+        focusPolicy: Qt.NoFocus
 
         indicator: Rectangle {
             anchors.fill: parent
@@ -81,6 +85,8 @@ Window {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             width: parent.height
+            focusPolicy: Qt.NoFocus
+
             Text {
                 text: "X"
                 font.pixelSize: 30
@@ -104,10 +110,13 @@ Window {
             cursorVisible: true
             inputMethodHints: Qt.ImhNoAutoUppercase
 
+            focus: Qt.inputMethod.visible
+
             onTextChanged: {
                 if (text)
                     entryModel.getTranslations(text);
             }
+
         }
     }
 
