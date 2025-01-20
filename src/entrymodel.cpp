@@ -1,6 +1,5 @@
 #include "entrymodel.h"
 #include <settingslib.h>
-#include <loglibrary.h>
 
 EntryModel::EntryModel(QObject *parent): EntryModel{"de", parent}
 {

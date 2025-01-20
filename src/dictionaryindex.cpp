@@ -1,7 +1,7 @@
 #include "dictionaryindex.h"
 #include <fstream>
 #include <filesystem>
-#include <loglibrary.h>
+#include <loglib/loglib.h>
 
 #include "utils.h"
 
@@ -16,7 +16,7 @@
 void DictionaryIndex::loadIndex(const std::string &indexPath)
 {
     if (!std::filesystem::exists(indexPath)){
-        ERROR("{} does not exist!", indexPath);
+        LOG_ERROR_F("{} does not exist!", indexPath);
         exit(1);
     }
 
@@ -45,7 +45,7 @@ void DictionaryIndex::loadIndex(const std::string &indexPath)
 bool DictionaryIndex::createIndex(const std::string &filePath)
 {
     if (!std::filesystem::exists(filePath)){
-        ERROR("{} does not exist, can't create an index!", filePath);
+        LOG_ERROR_F("{} does not exist, can't create an index!", filePath);
         return false;
     }
 
@@ -110,11 +110,11 @@ void DictionaryIndex::persistIndex(const std::map<std::string, long> indexToPers
  */
 DictionaryIndex::DictionaryIndex(const std::string& path): indexPath{path + ".idx"} {
     if (!std::filesystem::exists(indexPath)){
-        LOG("Index for {} does not exist. Trying to create it.", path);
+        LOG_INFO_F("Index for {} does not exist. Trying to create it.", path);
 
         bool res = createIndex(path);
         if (!res) {
-            ERROR("Could not create index for {}, exiting!", path);
+            LOG_ERROR_F("Could not create index for {}, exiting!", path);
             exit(1);
         }
     }
@@ -140,7 +140,7 @@ long DictionaryIndex::getIndex(const std::string &s)
     if (index.contains(tmp))
         return index[tmp];
 
-    DBG("{} can't be found in index file!", tmp);
+    LOG_DEBUG_F("{} can't be found in index file!", tmp);
 
     tmp = s.substr(0, 1);
     if (index.contains(tmp))

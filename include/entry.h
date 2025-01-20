@@ -7,7 +7,7 @@
 namespace DictionaryEntry {
 
 enum class EntryType {
-    NAN,
+    NA,
     NOUN,
     VERB,
     ADJECTIVE,
@@ -15,7 +15,7 @@ enum class EntryType {
 };
 
 static std::map<std::string, EntryType> entryTypeLookupTable {
-    {"", EntryType::NAN},
+    {"", EntryType::NA},
     {"adj", EntryType::ADJECTIVE},
     {"adv", EntryType::ADVERB},
     {"noun", EntryType::NOUN},

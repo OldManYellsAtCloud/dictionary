@@ -1,13 +1,13 @@
 #include "entry.h"
 #include "utils.h"
-#include <loglibrary.h>
+#include <loglib/loglib.h>
 
 namespace DictionaryEntry {
 Entry parseEntry(std::string s)
 {
     DictionaryEntry::Entry ret;
     if (s.length() == 0){
-        ERROR("Can't parse empty string into Entry object!");
+        LOG_ERROR_F("Can't parse empty string into Entry object!");
         return ret;
     }
 
@@ -16,19 +16,19 @@ Entry parseEntry(std::string s)
 
     ret.original = getNextToken(s, delimiter, pos);
     if (pos == s.length()) {
-        ERROR("Given string has not enough token to parse: {}", s);
+        LOG_ERROR_F("Given string has not enough token to parse: {}", s);
         return ret;
     }
 
     ret.translation = getNextToken(s, delimiter, pos);
     if (pos == s.length()) {
-        ERROR("Given string has not enough token to parse: {}", s);
+        LOG_ERROR_F("Given string has not enough token to parse: {}", s);
         return ret;
     }
 
     ret.entryType = parseEntryType(getNextToken(s, delimiter, pos));
     if (pos == s.length()) {
-        ERROR("Given string has not enough token to parse: {}", s);
+        LOG_ERROR_F("Given string has not enough token to parse: {}", s);
         return ret;
     }
 

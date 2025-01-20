@@ -1,11 +1,13 @@
-#include "entrymodel.h"
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include <loglib/loglib.h>
+#include "entrymodel.h"
 
 int main(int argc, char *argv[])
 {
+    loglib::logger().setName("dictionary");
+    loglib::logger().registerLogger(logging::LOGGER_FILE);
+
     QGuiApplication app(argc, argv);
     qmlRegisterType<EntryModel>("sgy.pine.dictionary", 1, 0, "EntryModel");
 

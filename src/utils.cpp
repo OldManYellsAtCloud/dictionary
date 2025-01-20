@@ -1,5 +1,5 @@
 #include "utils.h"
-#include <loglibrary.h>
+#include <loglib/loglib.h>
 #include <unicode/unistr.h>
 #include <algorithm>
 
@@ -75,8 +75,8 @@ std::string getNextToken(const std::string& s, const std::string& delim, size_t&
  */
 DictionaryEntry::EntryType parseEntryType(std::string s){
     if (DictionaryEntry::entryTypeLookupTable.count(s) == 0){
-        ERROR("{} is an unknown entry type!", s);
-        return DictionaryEntry::EntryType::NAN;
+        LOG_ERROR_F("{} is an unknown entry type!", s);
+        return DictionaryEntry::EntryType::NA;
     }
 
     return DictionaryEntry::entryTypeLookupTable[s];

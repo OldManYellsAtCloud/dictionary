@@ -1,7 +1,7 @@
 #include "dictionary.h"
 #include "utils.h"
 
-#include <loglibrary.h>
+#include <loglib/loglib.h>
 #include <settingslib.h>
 
 /**
@@ -16,7 +16,7 @@ Dictionary::Dictionary(std::string dictPath): idx{dictPath}, dictPath_{dictPath}
     try {
         numberOfResultsToGet = std::stoi(SettingsLib{"/etc"}.getValue("general", "numberOfResults"));
     } catch (std::exception e){
-        ERROR("Could not get number of results from config file! Error: {}", e.what());
+        LOG_ERROR_F("Could not get number of results from config file! Error: {}", e.what());
         exit(1);
     }
 }
@@ -73,7 +73,7 @@ std::string Dictionary::getFirstMatchingLine(std::string word)
     auto roughOffset = idx.getIndex(word);
     std::string line;
     if (roughOffset < 0){
-        ERROR("Could not get dictionary offset for '{}'", word);
+        LOG_ERROR_F("Could not get dictionary offset for '{}'", word);
         return line;
     }
 
@@ -117,7 +117,7 @@ long Dictionary::getBestMatchingIndex(std::string word)
     long roughIndex = idx.getIndex(word);
 
     if (roughIndex < 0){
-        ERROR("Could not get dictionary offset for {}", word);
+        LOG_ERROR_F("Could not get dictionary offset for {}", word);
     }
 
     long lastIndex = roughIndex;
